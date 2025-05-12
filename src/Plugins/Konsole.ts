@@ -172,6 +172,9 @@ export default function konsole(k)
 
         addCommand(name: string, action: (params: any) => void)
         {
+            if (!consoleInitialized)
+                return;
+
             if (commands[name] == null)
                 commands[name] = action;
         }
