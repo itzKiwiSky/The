@@ -1,0 +1,21 @@
+{
+    "name": "katris",
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite",
+        "preview": "vite preview",
+        "zip": "npm run build && mkdir -p dist && zip -r dist/game.zip dist -x \"**/.DS_Store\"",
+        "check": "tsc",
+        "create-scene": "node scripts/NewStage.js"
+    },
+    "dependencies": {
+        "@kaplayjs/crew": "^2.0.0-beta.6",
+        "kaplay": "^3001.0.10"
+    },
+    "devDependencies": {
+        "@types/node": "^22.13.14",
+        "typescript": "^5.8.2",
+        "vite": "^6.2.4"
+    }
+}
