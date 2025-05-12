@@ -100,7 +100,7 @@ export default class PopupController
             popup.outline.color = selected === true ? k.WHITE : k.BLACK;
             popup.children[0].outline.color = selected === true ? k.WHITE : k.BLACK;
             popup.pos.y = k.lerp(popup.pos.y, y, 0.067);
-            popup.pos.x = selected === true ? k.lerp(popup.pos.x, dist + 128, 0.067) : k.lerp(popup.pos.x, dist, 0.067);
+            popup.pos.x = selected === true ? k.lerp(popup.pos.x, dist + 160, 0.067) : k.lerp(popup.pos.x, dist, 0.067);
         });
     }
     

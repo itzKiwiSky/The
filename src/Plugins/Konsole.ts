@@ -4,6 +4,7 @@ export default function konsole(k)
     let consoleInitialized = false;
     const commandHistory = [];
     const logs = [];
+    const commands: Record<string, (params: any) => void> = {};
 
     function createConsoleBody()
     {
@@ -70,6 +71,51 @@ export default function konsole(k)
         })
     }
 
+    function logString(...msg: any)
+    {
+        if (!consoleInitialized)
+            return;
+
+        const textdata = msg.toString();
+        logs.push(`[info](INFO) ${textdata}[/info]`);
+        return;
+    }
+
+    function logWarn(...msg: any)
+    {
+        if (!consoleInitialized)
+            return;
+
+        const textdata = msg.toString();
+        logs.push(`[warn](WARN) ${textdata}[/warn]`);
+        return;
+    }
+
+    function logError(...msg: any)
+    {
+        if (!consoleInitialized)
+            return;
+
+        const textdata = msg.toString();
+        logs.push(`[error](ERROR) ${textdata}[/error]`);
+        return;
+    }
+
+    function parseCommand(text: string)
+    {
+        const tokens = text.split(" ");
+        const currentCommand = tokens.shift();
+        console.log(currentCommand);
+
+        if (commands[currentCommand] == null)
+        {
+            logError("Invalid command");
+            return;
+        }
+
+        commands[currentCommand](tokens);
+    }
+
     let consoleBody;
 
     return {
@@ -109,6 +155,7 @@ export default function konsole(k)
                     const txt = consoleBody.children[1];
                     commandHistory.push(txt.typedText);
                     logs.push(txt.typedText);
+                    parseCommand(txt.typedText);
                     txt.text = "";
                     txt.typedText = "";
                 }
@@ -117,34 +164,16 @@ export default function konsole(k)
             consoleInitialized = true;
         },
 
-        logString(...msg: any)
+        logString: logString,
+
+        logWarn: logWarn,
+
+        logError: logError,
+
+        addCommand(name: string, action: (params: any) => void)
         {
-            if (!consoleInitialized)
-                return;
-
-            const textdata = msg.toString();
-            logs.push(`[info](INFO) ${textdata}[/info]`);
-            return;
-        },
-
-        logWarn(...msg: any)
-        {
-            if (!consoleInitialized)
-                return;
-
-            const textdata = msg.toString();
-            logs.push(`[warn](WARN) ${textdata}[/warn]`);
-            return;
-        },
-
-        logError(...msg: any)
-        {
-            if (!consoleInitialized)
-                return;
-
-            const textdata = msg.toString();
-            logs.push(`[error](ERROR) ${textdata}[/error]`);
-            return;
-        },
+            if (commands[name] == null)
+                commands[name] = action;
+        }
     };
 }

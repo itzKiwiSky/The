@@ -13,6 +13,10 @@ k.scene("levelselect", () => {
     k.logWarn("Oh hi");
     k.logError("Oh hi");
 
+    k.addCommand("say_hi", () => {
+        k.logString("Oh hi!");
+    });
+
     const titleText = k.add([
         k.pos(0, 16),
         k.text("Level selection", {
