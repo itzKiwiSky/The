@@ -1,9 +1,10 @@
+import { Color, GameObj } from "kaplay";
 import k from "../../Engine";
 
 export default class PopupController
 {
-    static popups = [];
-    static difficultyColors = [
+    static popups: Array<GameObj> = [];
+    static difficultyColors: Array<Color> = [
         k.rgb(255, 195, 242),
         k.rgb(174, 226, 255),
         k.rgb(91, 166, 117),
@@ -17,8 +18,8 @@ export default class PopupController
         k.rgb(31, 16, 42),
     ];
 
-    public static currentSelected = 0;
-    public static scroll = 0;
+    public static currentSelected: number = 0;
+    public static scroll: number = 0;
 
     public static addPopup({
         name = "name",
@@ -30,6 +31,8 @@ export default class PopupController
         popupColor = k.WHITE,
         fontSize = 40,
         lineWidth = 96,
+        difficultyLine = true,
+        action = () => {}
     } = {}): void
     {
         const popupBox = k.add([
@@ -42,6 +45,7 @@ export default class PopupController
             ]),
             k.color(popupColor),
             k.outline(6, k.BLACK, 1),
+            k.z(10),
 
             {
                 name: name,
@@ -49,18 +53,27 @@ export default class PopupController
                 difficulty: difficulty,
                 selected: false,
                 height: height,
-            }
+                difficultyLine: difficultyLine,
+                action: action
+            },
         ]);
-        popupBox.add([
-            k.polygon([
-                k.vec2(length - lineWidth, 0),
-                k.vec2(length, 0),
-                k.vec2(length - sharpness , height),
-                k.vec2((length - sharpness) - lineWidth, height),
-            ]),
-            k.outline(6, k.BLACK, 1),
-            k.color(this.difficultyColors[k.clamp(popupBox.difficulty - 1, 0, 9)]),
-        ]);
+
+        if (difficultyLine)
+        {
+            const lineCol = popupBox.add([
+                k.polygon([
+                    k.vec2(length - lineWidth, 0),
+                    k.vec2(length, 0),
+                    k.vec2(length - sharpness , height),
+                    k.vec2((length - sharpness) - lineWidth, height),
+                ]),
+                k.outline(6, k.BLACK, 1),
+                k.color(this.difficultyColors[k.clamp(popupBox.difficulty - 1, 0, 9)]),
+                k.z(11),
+
+                "lineDifficulty"
+            ]);
+        }
         
         popupBox.add([
             k.pos(0, 6),
@@ -69,7 +82,7 @@ export default class PopupController
                 width: (length - (sharpness + lineWidth)) + fontSize,
                 align: "right",
             }),
-            
+            k.z(12),
         ]);
 
         popupBox.add([
@@ -79,7 +92,7 @@ export default class PopupController
                 width: (length - (sharpness + lineWidth)) + Math.round(fontSize / 1.7) / 4,
                 align: "right",
             }),
-            
+            k.z(13),
         ]);
         this.popups.push(popupBox);
     }
@@ -92,16 +105,28 @@ export default class PopupController
 
     public static updatePopups(): void
     {
+        //console.log(this.lineColorDiff);
+
         this.popups.forEach((popup, i, a) => {
             const dist = i - this.scroll;
             const y = k.center().y + dist * popup.height * 1.3;
             const selected = Math.round(this.scroll) === i;
             this.currentSelected = Math.round(this.scroll);
+
             popup.outline.color = selected === true ? k.WHITE : k.BLACK;
-            popup.children[0].outline.color = selected === true ? k.WHITE : k.BLACK;
+
+            console.log(this.popups[i].children[0]);
+
+            if (popup.difficultyLine)
+                this.popups[i].children[0].outline.color = selected === true ? k.WHITE : k.BLACK;
+
             popup.pos.y = k.lerp(popup.pos.y, y, 0.067);
-            popup.pos.x = selected === true ? k.lerp(popup.pos.x, dist + 160, 0.067) : k.lerp(popup.pos.x, dist, 0.067);
+            popup.pos.x = selected === true ? k.lerp(popup.pos.x, dist + k.wave(150, 180, k.time() * 2.2), 0.067) : k.lerp(popup.pos.x, dist, 0.067);
         });
     }
     
+    public static updateClick(): void
+    {
+        this.popups[Math.round(this.scroll)].selected = true;
+    }
 }

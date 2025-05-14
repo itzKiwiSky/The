@@ -9,13 +9,6 @@ k.scene("levelselect", () => {
     );
     
     k.init();
-    k.logString("Oh hi");
-    k.logWarn("Oh hi");
-    k.logError("Oh hi");
-
-    k.addCommand("say_hi", () => {
-        k.logString("Oh hi!");
-    });
 
     const titleText = k.add([
         k.pos(0, 16),
@@ -29,8 +22,36 @@ k.scene("levelselect", () => {
     ]);
 
     const scoreboard = k.add([
-
+        k.pos(k.width() - 220, k.center().y),
+        k.rect(360, 512, {
+            radius: 24
+        }),
+        k.color(k.BLACK),
+        k.opacity(0.5),
+        k.anchor("center"),
     ]);
+
+    scoreboard.onUpdate(() => {
+        if (PopupController.currentSelected > 0)
+        {
+            scoreboard.pos.x = k.lerp(scoreboard.pos.x, k.width() - 220, 0.1);
+            return;
+        }
+
+        scoreboard.pos.x = k.lerp(scoreboard.pos.x, k.width() + 220, 0.1);
+
+    });
+
+    PopupController.addPopup({
+        name: "Import chart",
+        author: "",
+        difficulty: 0,
+        length: k.center().x,
+        sharpness: 64,
+        height: 128,
+        difficultyLine: false,
+        popupColor: k.rgb(74, 48, 82),
+    });
 
     for(let i = 0; i < 10; i++)
     {
@@ -45,6 +66,7 @@ k.scene("levelselect", () => {
         });
     }
 
+
     k.onUpdate(() => {
         PopupController.updatePopups();
     });
@@ -54,6 +76,8 @@ k.scene("levelselect", () => {
             PopupController.updateScroll(1);
         if (key == "up")
             PopupController.updateScroll(-1);
+        if (key == "enter")
+            PopupController.updateClick();
     });
 
     k.onScroll((v) => {

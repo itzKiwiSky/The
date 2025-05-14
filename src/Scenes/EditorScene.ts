@@ -454,10 +454,9 @@ k.scene("editorscene", () => {
             n.onDestroy(() => {
                 const idx = editorState.notesObjects.indexOf(n);
 
-                if (idx !== -1) editorState.notesObjects.splice(idx, 1);
-                //editorState.notesObjects.splice(lastNote.index, 1);
+                if (idx !== -1) 
+                    editorState.notesObjects.splice(idx, 1);
             });
-            //k.debug.log(editorState.currentSelected)
         }
 
         if (mb == "right")
@@ -476,7 +475,6 @@ k.scene("editorscene", () => {
     });
 
     k.onScroll((delta) => {
-
         editorState.scrollDistance += delta.y / 10;
         k.setCamPos(k.vec2(k.getCamPos().x, editorState.scrollDistance));
     });

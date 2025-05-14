@@ -21,13 +21,21 @@ export default class FileController
         });
     }
 
-    static async receiveFile(): Promise<File> 
+    static async receiveFile(mode: "chart" | "audio" = "audio"): Promise<File> 
     {
+        const modes = {
+            ["chart"]: "",
+            ["audio"]: ".ogg,.wav,.mp3"
+        };
+
         let inputElement = document.createElement("input");
         inputElement.type = "file";
         inputElement.style.display = "none";
 
-        inputElement.accept = ".ogg,.wav,.mp3";
+        if (modes[mode] == null)
+            return;
+
+        inputElement.accept = modes[mode];
         inputElement.click();
 
         return new Promise((resolve) => {
@@ -44,7 +52,7 @@ export default class FileController
 
     static download(filename: string, data: string)
     {
-        const pom = document.createElement('a');
+        let pom = document.createElement('a');
         pom.style.display = "none";
         pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
 
@@ -52,5 +60,6 @@ export default class FileController
         document.body.appendChild(pom);
         pom.click();
         document.body.removeChild(pom);
+        pom = null;
     }
 }
