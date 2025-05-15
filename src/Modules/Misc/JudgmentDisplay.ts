@@ -39,14 +39,10 @@ export default function createJudgement(name: string): void
 
     popupJudment.onUpdate(() => {
         popupJudment.opacity -= k.dt() * 0.5;
-        //popupJudment.direction = k.lerp(popupJudment.direction, popupJudment.direction + 100, 0.1);
-        //popupJudment.vel.x = popupJudment.direction;
         popupJudment.applyImpulse(k.vec2(k.lerp(popupJudment.direction, 0, 0.1), 0));
 
         if (popupJudment.canJump === true)
         {
-            //popupJudment.addForce(k.vec2(k.randi(-1006, 1006), 0));
-            //popupJudment.moveBy(k.vec2(k.randi(-100, 100), 0));
             popupJudment.jump();
             popupJudment.canJump = false;
         }
