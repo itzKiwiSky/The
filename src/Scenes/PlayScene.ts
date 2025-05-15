@@ -1,7 +1,9 @@
 import k from "../Engine";
 import { Palette } from "../Modules/Misc/Colors";
+import createJudgement from "../Modules/Misc/JudgmentDisplay";
 
 k.scene("playscene", () => {
+    k.setGravity(1000);
     k.add([
         k.rect(k.width(), k.height()),
         k.scale(8),
@@ -15,6 +17,21 @@ k.scene("playscene", () => {
             "u_aspect": k.width() / k.height(),
         })),
     ]);
+
+    k.onKeyPress((key) => {
+        const jud = [
+            () => createJudgement("awesome"),
+            () => createJudgement("perfect"),
+            () => createJudgement("good"),
+            () => createJudgement("ok"),
+            () => createJudgement("miss"),
+        ];
+
+        if (jud[parseInt(key) - 1] == null)
+            return;
+
+        jud[parseInt(key) - 1]()
+    });
 
     const hitlane = k.add([
         k.pos(0, k.height() - 96),

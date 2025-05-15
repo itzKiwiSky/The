@@ -115,8 +115,6 @@ export default class PopupController
 
             popup.outline.color = selected === true ? k.WHITE : k.BLACK;
 
-            console.log(this.popups[i].children[0]);
-
             if (popup.difficultyLine)
                 this.popups[i].children[0].outline.color = selected === true ? k.WHITE : k.BLACK;
 

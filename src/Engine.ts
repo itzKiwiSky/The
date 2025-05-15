@@ -12,7 +12,21 @@ const k = kaplay({
     debug: true,
     crisp: true,
     plugins: [ crew, kaplayUi, konsole ],
-    font: "happy-o"
+    font: "happy-o",
+    buttons: {
+        down: {
+            keyboard: [ "down", "s" ]
+        },
+        up: {
+            keyboard: [ "up", "w" ]
+        },
+        accept: {
+            keyboard: [ "enter", "space" ]
+        },
+        return: {
+            keyboard: [ "backspace", "escape" ]
+        },
+    }
 });
 
 export default k;

@@ -18,6 +18,18 @@ k.loadSprite("tiles", "images/tiles.png", {
     sliceY: 1
 });
 
+const judmentNames = [
+    "awesome",
+    "perfect",
+    "good",
+    "ok",
+    "miss",
+]
+
+for (let i = 0; i < judmentNames.length; i++)
+    k.loadSprite(judmentNames[i], `images/${judmentNames[i]}.png`);
+    
+
 k.loadSound("hitsound", "sounds/hitsound.ogg");
 
 k.loadShaderURL("background", null, "shaders/Background.glsl");
