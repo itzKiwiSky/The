@@ -1,12 +1,21 @@
+import * as JSZip from "jszip";
 import k from "../Engine";
+import FileController from "../Modules/FileController";
 import background from "../Modules/Misc/Background";
 import PopupController from "../Modules/Selector/PopupController";
+import displayMessage from "../Modules/Misc/MessageController";
+
+export const registers = {
+    isMessageDisplaying: false,
+}
 
 k.scene("levelselect", () => {
     background(
         new k.Color(201, 115, 115),
         new k.Color(166, 85, 95)
     );
+
+    displayMessage("Oh Hi!", "Idk how useful this could be :3");
     
     k.init();
 
@@ -39,10 +48,9 @@ k.scene("levelselect", () => {
         }
 
         scoreboard.pos.x = k.lerp(scoreboard.pos.x, k.width() + 220, 0.1);
-
     });
 
-    PopupController.addPopup({
+    const popupImport = PopupController.addPopup({
         name: "Import chart",
         author: "",
         difficulty: 0,
@@ -53,25 +61,30 @@ k.scene("levelselect", () => {
         popupColor: k.rgb(74, 48, 82),
     });
 
-    for(let i = 0; i < 10; i++)
-    {
-        PopupController.addPopup({
-            name: "Rat river",
-            author: "Lemkuuja",
-            difficulty: k.randi(1, 10),
-            length: k.center().x,
-            sharpness: 64,
-            height: 128,
-            popupColor: k.rgb(242, 174, 153),
-        });
-    }
+    popupImport.action = async () => {
+        const zipdata = await FileController.receiveFile("chart");
+        if (zipdata === null)
+        {
+            displayMessage("Ops! Error Open out >:(", "An error occurred during the the level import\n please try again later")
+            return;
+        }
 
+        const chartdata = await JSZip.loadAsync(zipdata);
+        
+        for (const [filename, filedata] of Object.entries(chartdata.files))
+        {
+            //console.log(filedata.);
+        }
+    };
 
     k.onUpdate(() => {
         PopupController.updatePopups();
     });
 
     k.onKeyPress((key) => {
+        if (registers.isMessageDisplaying == true)
+            return;
+
         if (key == "down")
             PopupController.updateScroll(1);
         if (key == "up")
@@ -81,7 +94,9 @@ k.scene("levelselect", () => {
     });
 
     k.onScroll((v) => {
-        //k.debug.log(v);\
+        if (registers.isMessageDisplaying == true)
+            return;
+
         if (v.y > 0)
             PopupController.updateScroll(1);
         if (v.y < 0)

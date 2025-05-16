@@ -33,7 +33,7 @@ export default class PopupController
         lineWidth = 96,
         difficultyLine = true,
         action = () => {}
-    } = {}): void
+    } = {})
     {
         const popupBox = k.add([
             k.pos(0, 0),
@@ -95,6 +95,7 @@ export default class PopupController
             k.z(13),
         ]);
         this.popups.push(popupBox);
+        return popupBox
     }
 
     public static updateScroll(dir: -1 | 1): void
@@ -105,8 +106,6 @@ export default class PopupController
 
     public static updatePopups(): void
     {
-        //console.log(this.lineColorDiff);
-
         this.popups.forEach((popup, i, a) => {
             const dist = i - this.scroll;
             const y = k.center().y + dist * popup.height * 1.3;
@@ -126,5 +125,6 @@ export default class PopupController
     public static updateClick(): void
     {
         this.popups[Math.round(this.scroll)].selected = true;
+        this.popups[Math.round(this.scroll)].action();
     }
 }

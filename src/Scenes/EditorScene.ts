@@ -1,6 +1,6 @@
 import k from "../Engine";
 import newButton from "../Interface/Button";
-import FileController from "../Modules/FileManager";
+import FileController from "../Modules/FileController";
 import newSlider from "../Interface/Slider";
 import background from "../Modules/Misc/Background";
 import Conductor from "../Modules/Conductor";

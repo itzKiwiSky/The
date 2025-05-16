@@ -32,8 +32,11 @@ export default class FileController
         inputElement.type = "file";
         inputElement.style.display = "none";
 
-        if (modes[mode] == null)
+        if (modes[mode] === null)
+        {
+            k.debug.log("fudeu")
             return;
+        }
 
         inputElement.accept = modes[mode];
         inputElement.click();
