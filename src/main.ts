@@ -17,4 +17,4 @@ k.add([
     k.z(-Math.max()),
 ]);
 
-k.onLoad(() => k.go("playscene"));
+k.onLoad(() => k.go("levelselect"));

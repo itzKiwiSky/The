@@ -9,6 +9,19 @@ Object.keys(assets).forEach((key) => {
     k.loadSprite(`@${key}-o`, asset.outlined);
 });
 
+function getFileName(path: string): string | null 
+{
+    const match = path.match(/([^\/]+)\.[^.]+$/);
+    return match ? match[1] : null;
+}
+
+//@ts-ignore//
+const files = import.meta.glob("/resources/music/*.ogg?url", { eager: true });
+Object.keys(files).forEach((el, i, a) => {
+    //console.log(getFileName(el));
+    k.loadMusic(el, `/music/${el}.ogg`);
+});
+
 k.loadSprite("button", "images/button.png", {
     slice9: { left: 3, top: 3, right: 3, bottom: 3 },
     sliceX: 2,

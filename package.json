@@ -11,7 +11,8 @@
     },
     "dependencies": {
         "@kaplayjs/crew": "^2.0.0-beta.6",
-        "kaplay": "^3001.0.10"
+        "jszip": "^3.10.1",
+        "kaplay": "^3001.0.17"
     },
     "devDependencies": {
         "@types/node": "^22.13.14",

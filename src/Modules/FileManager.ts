@@ -21,10 +21,10 @@ export default class FileController
         });
     }
 
-    static async receiveFile(mode: "chart" | "audio" = "audio"): Promise<File> 
+    public static async receiveFile(mode: "chart" | "audio" = "audio"): Promise<File> 
     {
         const modes = {
-            ["chart"]: "",
+            ["chart"]: ".chart,.zip",
             ["audio"]: ".ogg,.wav,.mp3"
         };
 
@@ -50,7 +50,7 @@ export default class FileController
         });
     }
 
-    static download(filename: string, data: string)
+    public static download(filename: string, data: string)
     {
         let pom = document.createElement('a');
         pom.style.display = "none";
